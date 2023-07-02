@@ -10,7 +10,7 @@ const createCard = (req, res) => {
   const {name, link} = req.body;
   Card.create({name, link, owner: req.user._id})
   .then((card) => {
-    res.send(card)
+    res.status(201).send(card)
   })
   .catch((error) => {
     if (error instanceof mongoose.Error.ValidationError) {
@@ -24,7 +24,7 @@ const createCard = (req, res) => {
 const getCards = (req, res) => {
   Card.find({})
   .then((cards) => {
-    res.send(cards)
+    res.status(201).send(cards)
   })
   .catch((error) => {
     res.status(ERROR_CODE).send({ message: 'Произошла ошибка на сервере' })
@@ -33,14 +33,15 @@ const getCards = (req, res) => {
 
 const deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
+  .orFail(new Error('notValidData'))
   .then((card) => {
-    if (!card) {
-      res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' })
-      return;
-    }
-    res.send(card)
+    res.status(201).send(card)
   })
   .catch((error) => {
+    if (error.message === 'notValidData') {
+      res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' });
+      return;
+    };
     if (error instanceof mongoose.Error.CastError) {
       res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные' });
       return;
@@ -55,14 +56,15 @@ const likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
+  .orFail(new Error('notValidData'))
   .then((card) => {
-    if (!card) {
-      res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' });
-      return;
-    }
-    res.send(card)
+    res.status(201).send(card)
   })
   .catch((error) => {
+    if (error.message === 'notValidData') {
+      res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' });
+      return;
+    };
     if (error instanceof mongoose.Error.CastError) {
       res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные для постановки лайка' });
       return;
@@ -77,11 +79,15 @@ const dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
+  .orFail(new Error('notValidData'))
   .then((card) => {
-    if (!card) {res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' })}
-    res.send(card)
+    res.status(201).send(card)
   })
   .catch((error) => {
+    if (error.message === 'notValidData') {
+      res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' });
+      return;
+    };
     if (error instanceof mongoose.Error.CastError) {
       res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные для снятии лайка' });
       return;
