@@ -42,7 +42,7 @@ const getUser = (req, res) => {
     res.send(user);
   })
   .catch((error) => {
-    if (error instanceof mongoose.Error.ValidationError) {
+    if (error instanceof mongoose.Error.CastError) {
       res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные' });
       return;
     }
