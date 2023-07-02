@@ -41,6 +41,10 @@ const deleteCard = (req, res) => {
     res.send(card)
   })
   .catch((error) => {
+    if (error instanceof mongoose.Error.CastError) {
+      res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные' });
+      return;
+    }
     res.status(ERROR_CODE).send({ message: 'Произошла ошибка на сервере' })
   })
 }
