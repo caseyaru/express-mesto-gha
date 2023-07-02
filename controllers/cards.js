@@ -24,7 +24,7 @@ const createCard = (req, res) => {
 const getCards = (req, res) => {
   Card.find({})
   .then((cards) => {
-    res.status(201).send(cards)
+    res.status(200).send(cards)
   })
   .catch((error) => {
     res.status(ERROR_CODE).send({ message: 'Произошла ошибка на сервере' })
@@ -35,7 +35,7 @@ const deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
   .orFail(new Error('notValidData'))
   .then((card) => {
-    res.status(201).send(card)
+    res.status(200).send(card)
   })
   .catch((error) => {
     if (error.message === 'notValidData') {
@@ -58,7 +58,7 @@ const likeCard = (req, res) => {
   )
   .orFail(new Error('notValidData'))
   .then((card) => {
-    res.status(201).send(card)
+    res.status(200).send(card)
   })
   .catch((error) => {
     if (error.message === 'notValidData') {
@@ -81,7 +81,7 @@ const dislikeCard = (req, res) => {
   )
   .orFail(new Error('notValidData'))
   .then((card) => {
-    res.status(201).send(card)
+    res.status(200).send(card)
   })
   .catch((error) => {
     if (error.message === 'notValidData') {

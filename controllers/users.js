@@ -24,7 +24,7 @@ const createUser = (req, res) => {
 const getUsers = (req, res) => {
   User.find({})
   .then((users) => {
-    res.status(201).send(users)
+    res.status(200).send(users)
   })
   .catch((error) => {
     res.status(ERROR_CODE).send({ message: 'Произошла ошибка на сервере' })
@@ -36,7 +36,7 @@ const getUser = (req, res) => {
   User.findById(userId)
   .orFail(new Error('notValidData'))
   .then((user) => {
-    res.status(201).send(user);
+    res.status(200).send(user);
   })
   .catch((error) => {
     if (error.message === 'notValidData') {
@@ -56,7 +56,7 @@ const updateUser = (req, res) => {
   User.findByIdAndUpdate(req.user._id, {name, about}, { new: true, runValidators: true })
   .orFail(new Error('notValidData'))
   .then((user) => {
-    res.status(201).send(user)
+    res.status(200).send(user)
   })
   .catch((error) => {
     if (error.message === 'notValidData') {
@@ -76,7 +76,7 @@ const updateUserAvatar = (req, res) => {
   User.findByIdAndUpdate(req.user._id, {avatar}, { new: true, runValidators: true })
   .orFail(new Error('notValidData'))
   .then((user) => {
-    res.status(201).send(user)
+    res.status(200).send(user)
   })
   .catch((error) => {
     if (error.message === 'notValidData') {
