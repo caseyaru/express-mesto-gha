@@ -19,6 +19,10 @@ app.use((req, res, next) => {
 app.use('/users', usersRoute);
 app.use('/cards', cardsRoute);
 
+app.use('*', (req, res) => {
+  res.status(404).send({ message: 'Указан неверный маршрут' });
+});
+
 app.listen(3000, () => {
   console.log('Сервер жив')
 })
