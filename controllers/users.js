@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const {NotFound, NotAllData} = require('../middlewares/errors');
 
 const createUser = (req, res, next) => {
   bcrypt.hash(String(req.body.password), 10)
@@ -29,7 +30,7 @@ const login = (req, res, next) => {
   }
   User.findOne({email})
       .select('+password')
-      .orFail(() => new Error('Пользователь не найден'))
+      .orFail(() => new NotAllData('Пользователь не найден'))
       .then((user) => {
         bcrypt.compare(password, user.password)
               .then(isValidUser => {
@@ -60,6 +61,7 @@ const getUsers = (req, res, next) => {
 const getUser = (req, res, next) => {
   const {userId} = req.params;
   User.findById(userId)
+  .orFail(new NotFound('Данные не найдены'))
   .orFail(new Error('notValidData'))
   .then((user) => {
     res.status(200).send(user);
