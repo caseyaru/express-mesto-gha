@@ -1,7 +1,9 @@
-export default class NotAllowed extends Error {
+class NotAllowed extends Error {
   constructor(err) {
     super(err);
     this.statusCode = 403;
     this.message = 'Недостаточно прав';
   }
 }
+
+module.exports = NotAllowed;
