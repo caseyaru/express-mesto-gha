@@ -6,30 +6,30 @@ const cardSchema = new mongoose.Schema({
     type: String,
     minlength: [2, 'Минимальная длина поля "name" - 2'],
     maxlength: [30, 'Максимальная длина поля "name" - 30'],
-    required: [true, 'Поле "name" должно быть заполнено']
+    required: [true, 'Поле "name" должно быть заполнено'],
   },
   link: {
     type: String,
     required: [true, 'Поле "link" должно быть заполнено'],
     validate: {
       validator: (v) => validator.isURL(v),
-      message: 'Некорректный URL'
-    }
+      message: 'Некорректный URL',
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    required: true
+    required: true,
   },
-  likes:  {
+  likes: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
     default: [],
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 }, { versionKey: false });
 
 module.exports = mongoose.model('card', cardSchema);

@@ -2,44 +2,49 @@ const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 
-const {getUsers, getUser, getMe, updateUser, updateUserAvatar} = require('../controllers/users');
+const {
+  getUsers, getUser, getMe, updateUser, updateUserAvatar,
+} = require('../controllers/users');
 
-router.get('/me',getMe);
+router.get('/me', getMe);
 
 router.get('/', getUsers);
 
-router.get('/:userId',
+router.get(
+  '/:userId',
   celebrate({
     params: Joi.object().keys({
       userId: Joi.string().hex().length(24).required(),
     }),
   }),
-  getUser
+  getUser,
 );
 
-router.patch('/me',
+router.patch(
+  '/me',
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30).messages({
         'string.min': 'Минимальная длина имени - 2 символа',
-        'string.max': 'Максимальная длина имени - 30 символов'
+        'string.max': 'Максимальная длина имени - 30 символов',
       }),
       about: Joi.string().min(2).max(30).messages({
         'string.min': 'Минимальная длина информации о себе - 2 символа',
-        'string.max': 'Максимальная длина информации о себе - 30 символов'
+        'string.max': 'Максимальная длина информации о себе - 30 символов',
       }),
     }),
   }),
-  updateUser
+  updateUser,
 );
 
-router.patch('/me/avatar',
+router.patch(
+  '/me/avatar',
   celebrate({
     body: Joi.object().keys({
-      avatar: Joi.string().uri({scheme: ['http', 'https']}),
+      avatar: Joi.string().uri({ scheme: ['http', 'https'] }),
     }),
   }),
-  updateUserAvatar
+  updateUserAvatar,
 );
 
 router.use(errors());

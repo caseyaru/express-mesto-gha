@@ -2,50 +2,57 @@ const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 
-const {createCard, getCards, deleteCard, likeCard, dislikeCard} = require('../controllers/cards');
+const {
+  createCard, getCards, deleteCard, likeCard, dislikeCard,
+} = require('../controllers/cards');
 
-router.post('/',
-    celebrate({
-      body: Joi.object().keys({
-        name: Joi.string().required().min(2).max(30).messages({
+router.post(
+  '/',
+  celebrate({
+    body: Joi.object().keys({
+      name: Joi.string().required().min(2).max(30)
+        .messages({
           'string.min': 'Минимальная длина названия - 2 символа',
-          'string.max': 'Максимальная длина названия - 30 символов'
+          'string.max': 'Максимальная длина названия - 30 символов',
         }),
-        link: Joi.string().required().uri({scheme: ['http', 'https']}).messages({
-          'string.uri': 'Некорректная ссылка на изображение',
-        }),
+      link: Joi.string().required().uri({ scheme: ['http', 'https'] }).messages({
+        'string.uri': 'Некорректная ссылка на изображение',
       }),
     }),
-    createCard
+  }),
+  createCard,
 );
 
 router.get('/', getCards);
 
-router.delete('/:cardId',
+router.delete(
+  '/:cardId',
   celebrate({
     params: Joi.object().keys({
-        cardId: Joi.string().hex().length(24).required(),
+      cardId: Joi.string().hex().length(24).required(),
     }),
   }),
-  deleteCard
+  deleteCard,
 );
 
-router.put('/:cardId/likes',
+router.put(
+  '/:cardId/likes',
   celebrate({
     params: Joi.object().keys({
-        cardId: Joi.string().hex().length(24).required(),
+      cardId: Joi.string().hex().length(24).required(),
     }),
   }),
-  likeCard
+  likeCard,
 );
 
-router.delete('/:cardId/likes',
+router.delete(
+  '/:cardId/likes',
   celebrate({
     params: Joi.object().keys({
-        cardId: Joi.string().hex().length(24).required(),
+      cardId: Joi.string().hex().length(24).required(),
     }),
   }),
-  dislikeCard
+  dislikeCard,
 );
 
 router.use(errors());
