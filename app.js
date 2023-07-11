@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const { celebrate, Joi } = require('celebrate');
 
 const app = express();
 
@@ -22,12 +23,18 @@ app.use(cookieParser());
 app.use(helmet());
 app.disable('x-powered-by');
 
-// app.use((req, res, next) => {
-//   req.user = { _id: '64a076597568596f72fcdbe4' };
-//   next();
-// });
-
-app.post('/signup', createUser);
+app.post('/signup',
+  // celebrate({
+  //   body: Joi.object().keys({
+  //     name: Joi.string().required().min(2).max(30),
+  //     about: Joi.string().required().min(2).max(30),
+  //     avatar: Joi.string().required(),
+  //     email: Joi.string().required().email(),
+  //     password: Joi.string().required(),
+  //   }),
+  // }),
+  createUser
+);
 app.post('/signin', login);
 
 app.use(auth);
