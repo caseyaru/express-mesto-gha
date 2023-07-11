@@ -20,10 +20,33 @@ router.post('/',
 );
 
 router.get('/', getCards);
-router.delete('/:cardId', deleteCard);
 
-router.put('/:cardId/likes', likeCard);
-router.delete('/:cardId/likes', dislikeCard);
+router.delete('/:cardId',
+  celebrate({
+    params: Joi.object().keys({
+        cardId: Joi.string().hex().required(),
+    }),
+  }),
+  deleteCard
+);
+
+router.put('/:cardId/likes',
+  celebrate({
+    params: Joi.object().keys({
+        cardId: Joi.string().hex().required(),
+    }),
+  }),
+  likeCard
+);
+
+router.delete('/:cardId/likes',
+  celebrate({
+    params: Joi.object().keys({
+        cardId: Joi.string().hex().required(),
+    }),
+  }),
+  dislikeCard
+);
 
 router.use(errors());
 
