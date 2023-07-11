@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
-const {NotFound, NotAllData} = require('../middlewares/errors');
+const {NotFound, NotValidData, NotAllData} = require('../middlewares/errors');
 
 const createUser = (req, res, next) => {
   bcrypt.hash(String(req.body.password), 10)
@@ -26,7 +26,8 @@ const createUser = (req, res, next) => {
 const login = (req, res, next) => {
   const {email, password} = req.body;
   if (!email || !password) {
-    return res.status(401).send({ message: 'Переданы не все необходимые данные' });
+    //return res.status(401).send({ message: 'Переданы не все необходимые данные' });
+    next(new NotValidData('Переданы не все необходимые данные'));
   }
   User.findOne({email})
       .select('+password')

@@ -22,6 +22,14 @@ class NotAllData extends Error {
   }
 }
 
+class NotAllowed extends Error {
+  constructor(err){
+    super(err);
+    this.statusCode = 403;
+    this.message = 'Недостаточно прав';
+  }
+}
+
 class UserError extends Error {
   constructor(err){
     super(err);
@@ -38,14 +46,6 @@ class ServerError extends Error {
   }
 }
 
-class SomeError extends Error {
-  constructor(err){
-    super(err);
-    this.statusCode = err.statusCode;
-    this.message = err.body;
-  }
-}
-
 const errorHandler = (err, req, res, next) => {
   console.log(err);
 
@@ -57,6 +57,8 @@ const errorHandler = (err, req, res, next) => {
     error = new NotValidData(err);
   } else if (err.statusCode === 401) {
     error = new NotAllData(err);
+  } else if (err.statusCode === 403) {
+      error = new NotAllowed(err);
   } else if (err.code === 11000) {
     error = new UserError(err);
   } else {
@@ -68,4 +70,4 @@ const errorHandler = (err, req, res, next) => {
   next();
 }
 
-module.exports = {NotFound, NotAllData, errorHandler};
+module.exports = {NotFound, NotValidData, NotAllowed, NotAllData, errorHandler};

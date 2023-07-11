@@ -1,5 +1,5 @@
 const Card = require('../models/card');
-const {NotFound} = require('../middlewares/errors');
+const {NotFound, NotAllowed} = require('../middlewares/errors');
 
 const createCard = (req, res, next) => {
   const {name, link} = req.body;
@@ -19,7 +19,7 @@ const getCards = (req, res, next) => {
 }
 
 const deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  Card.findById(req.params.cardId)
   .orFail(new NotFound('Данные не найдены'))
   .then((card) => {
     if (card.owner.toString() === req.user._id) {
@@ -29,7 +29,8 @@ const deleteCard = (req, res, next) => {
       })
       .catch(next);
     } else {
-      return res.status(403).send({message: 'Недостаточно прав для удаления карточки'})
+      //return res.status(403).send({message: 'Недостаточно прав для удаления карточки'})
+      next(new NotAllowed('Недостаточно прав для удаления карточки'));
     }
   })
   .catch(next);

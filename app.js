@@ -11,14 +11,15 @@ const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 
 const app = express();
+const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
 const usersRoute = require('./routes/users');
 const cardsRoute = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
-const {errorHandler} = require('./middlewares/errors');
+const {NotFound, errorHandler} = require('./middlewares/errors');
 
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
+mongoose.connect(DB_URL);
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -53,13 +54,14 @@ app.use(auth);
 app.use('/users', usersRoute);
 app.use('/cards', cardsRoute);
 
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Указан неверный маршрут' });
+app.use('*', (req, res, next) => {
+  //res.status(404).send({ message: 'Указан неверный маршрут' });
+  next(new NotFound('Маршрут не найден'));
 });
 
 app.use(errors());
 app.use(errorHandler);
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log('Сервер жив')
 })
