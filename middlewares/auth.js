@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const {NotValidData} = require('../middlewares/errors');
+const {NotAllData} = require('../middlewares/errors');
 
 const auth = (req, res, next) => {
   const token = req.cookies.jwt;
@@ -8,7 +8,7 @@ const auth = (req, res, next) => {
   try {
     payload = jwt.verify(token, 'secret');
   } catch(err) {
-    next(new NotValidData('Ошибка в токене'));
+    next(new NotAllData('Ошибка в токене'));
     //res.status(401).send({ message: 'Ошибка в токене' })
   }
 
