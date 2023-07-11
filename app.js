@@ -20,6 +20,8 @@ const auth = require('./middlewares/auth');
 const { errorHandler } = require('./middlewares/errors');
 const NotFound = require('./errors/NotFound');
 
+const regex = /^https?:\/\/.+\.[a-z]+/;
+
 mongoose.connect(DB_URL);
 
 app.use(bodyParser.json());
@@ -33,7 +35,7 @@ app.post(
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().uri({ scheme: ['http', 'https'] }),
+      avatar: Joi.string().uri({ scheme: ['http', 'https'] }).pattern(regex),
       email: Joi.string().required().email(),
       password: Joi.string().required().min(8),
     }),

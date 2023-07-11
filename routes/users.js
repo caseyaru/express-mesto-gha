@@ -2,6 +2,8 @@ const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 
+const regex = /^https?:\/\/.+\.[a-z]+/;
+
 const {
   getUsers, getUser, getMe, updateUser, updateUserAvatar,
 } = require('../controllers/users');
@@ -41,7 +43,7 @@ router.patch(
   '/me/avatar',
   celebrate({
     body: Joi.object().keys({
-      avatar: Joi.string().uri({ scheme: ['http', 'https'] }),
+      avatar: Joi.string().uri({ scheme: ['http', 'https'] }).pattern(regex),
     }),
   }),
   updateUserAvatar,
