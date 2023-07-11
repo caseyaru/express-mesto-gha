@@ -1,5 +1,5 @@
 const Card = require('../models/card');
-const NotFound = require('../middlewares/errors');
+const {NotFound} = require('../middlewares/errors');
 
 const createCard = (req, res, next) => {
   const {name, link} = req.body;
