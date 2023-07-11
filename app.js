@@ -6,7 +6,9 @@ const helmet = require('helmet');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+
 const { celebrate, Joi } = require('celebrate');
+const { errors } = require('celebrate');
 
 const app = express();
 
@@ -46,6 +48,7 @@ app.use('*', (req, res) => {
   res.status(404).send({ message: 'Указан неверный маршрут' });
 });
 
+app.use(errors());
 app.use(errorHandler);
 
 app.listen(3000, () => {
