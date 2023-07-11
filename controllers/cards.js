@@ -20,6 +20,7 @@ const getCards = (req, res, next) => {
 
 const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
+  .orFail(new NotFound('Данные не найдены'))
   .then((card) => {
     if (card.owner.toString() === req.user._id) {
       card.deleteOne(card)
