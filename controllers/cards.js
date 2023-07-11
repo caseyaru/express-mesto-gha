@@ -1,5 +1,4 @@
 const Card = require('../models/card');
-// const { NotFound, NotAllowed } = require('../middlewares/errors');
 const NotFound = require('../errors/NotFound');
 const NotAllowed = require('../errors/NotAllowed');
 
