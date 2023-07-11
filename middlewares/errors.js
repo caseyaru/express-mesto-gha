@@ -77,6 +77,8 @@ const errorHandler = (err, req, res, next) => {
   next();
 };
 
-module.exports = {
-  NotFound, NotValidData, NotAllowed, NotAllData, errorHandler,
-};
+// module.exports = {
+//   NotFound, NotValidData, NotAllowed, NotAllData, errorHandler,
+// };
+
+module.exports = { errorHandler };

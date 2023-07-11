@@ -15,7 +15,10 @@ const usersRoute = require('./routes/users');
 const cardsRoute = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
-const { NotFound, errorHandler } = require('./middlewares/errors');
+
+// const { NotFound, errorHandler } = require('./middlewares/errors');
+const { errorHandler } = require('./middlewares/errors');
+const NotFound = require('./errors/NotFound');
 
 mongoose.connect(DB_URL);
 
