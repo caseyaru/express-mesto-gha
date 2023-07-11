@@ -3,8 +3,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 
 const { celebrate, Joi } = require('celebrate');
