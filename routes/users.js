@@ -36,7 +36,7 @@ router.patch('/me',
 router.patch('/me/avatar',
   celebrate({
     body: Joi.object().keys({
-      avatar: Joi.string().uri().messages({'string.uri': 'Некорректная ссылка на аватар'}),
+      avatar: Joi.string().uri({scheme: ['http', 'https']}),
     }),
   }),
   updateUserAvatar

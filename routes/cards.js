@@ -11,7 +11,7 @@ router.post('/',
           'string.min': 'Минимальная длина названия - 2 символа',
           'string.max': 'Максимальная длина названия - 30 символов'
         }),
-        link: Joi.string().required().uri().messages({
+        link: Joi.string().required().uri({scheme: ['http', 'https']}).messages({
           'string.uri': 'Некорректная ссылка на изображение',
         }),
       }),

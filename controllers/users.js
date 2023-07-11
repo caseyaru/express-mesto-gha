@@ -39,7 +39,7 @@ const login = (req, res, next) => {
                     maxAge: 3600 * 24 * 7,
                     httpOnly: true
                   })
-                  res.status(201).send(user);
+                  res.status(200).send(user);
                 } else {
                   res.status(401).send({ message: 'Неверный пароль' });
                 }
