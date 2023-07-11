@@ -39,7 +39,7 @@ const likeCard = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-  .orFail(new Error('notValidData'))
+  //.orFail(new Error('notValidData'))
   .then((card) => {
     res.status(200).send(card)
   })
@@ -52,7 +52,7 @@ const dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
-  .orFail(new Error('notValidData'))
+  //.orFail(new Error('notValidData'))
   .then((card) => {
     res.status(200).send(card)
   })
