@@ -1,4 +1,5 @@
 const Card = require('../models/card');
+const NotFound = require('../middlewares/errors');
 
 const createCard = (req, res, next) => {
   const {name, link} = req.body;
@@ -39,7 +40,7 @@ const likeCard = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-  .orFail(new Error('notValidData'))
+  .orFail(new NotFound('Данные не найдены'))
   .then((card) => {
     res.status(200).send(card)
   })
@@ -52,7 +53,7 @@ const dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
-  .orFail(new Error('notValidData'))
+  .orFail(new NotFound('Данные не найдены'))
   .then((card) => {
     res.status(200).send(card)
   })
