@@ -44,7 +44,7 @@ const login = (req, res, next) => {
             });
             res.status(200).send(user);
           } else {
-            res.status(401).send({ message: 'Неверный пароль' });
+            next(new NotAllData('Неверный пароль'));
           }
         })
         .catch(next);
